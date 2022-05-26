@@ -1,7 +1,21 @@
 {
   "extends": "@spinnaker/pluginsdk/pluginconfig/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "build/dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ],
+      "components/*": [
+        "./src/components/*"
+      ]
+    },
+    "types": [
+      "jasmine",
+      "node",
+      "@testing-library/jasmine-dom"
+    ]
   }
 }
