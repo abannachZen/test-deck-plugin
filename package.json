@@ -12,7 +12,7 @@
     "postinstall": "check-plugin && check-peer-dependencies || true",
     "modules": "echo yarn modules no-op",
     "proxy": "dev-proxy",
-    "test": "jest --coverage --no-cache",
+    "test": "karma start --single-run",
     "watch": "rollup -c -w --no-watch.clearScreen",
     "lint": "eslint --ext js,jsx,ts,tsx src",
     "develop": "npm run clean && run-p watch proxy",

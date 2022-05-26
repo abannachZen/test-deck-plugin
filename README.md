@@ -2,34 +2,41 @@
 
 This repo is intended to be used to reproduce errors when writing deck plugins.
 
-## Issue
+## Issues
 
-* When attempting to update @spinnaker dependencies to the latest our Jest tests no longer are able
-  to find the `@spinnaker/*` modules.
+* EcmaScript module packaging :white_check_mark: (:warning: workaround)
+    * When upgrading `@spinnaker/*@ >= 0.0.595` the packaging changed from CommonJS to EcmaScript.
+      Causing [Jest] to no longer be able to resolve the `@spinnaker/*` dependencies.
+    * The workaround for this is to no longer use [Jest], but to pull in [Karma] + [Jasmine]
+    * This workaround is not ideal as it changes how we do work, but it allows us to continue
+      testing.
+* Circular dependency
+    * [Webpack] 5 identifies and breaks on circular dependencies.
+    * `@spinnaker` depends on `react-virtualized` which after an update to better use types
+      introduced a lot of circular dependencies. See [react-virtualized#1308]
+      and [react-virtualized#1494]
+    * The version that introduced the issue is significantly older than the requested version.
+    * [spinnaker/deck] uses [Webpack] 4 so they are not seeing this issue. Which says the workaround
+      is to rollback to [Webpack] 4 
 
-## Notes
+## To Reproduce
 
-* At first I thought it had something to do with using yarn workspaces as I was trying to refactor
-  to use them as well as update dependencies in our repo. So I created this repo which was generated
-  via `npx -p @spinnaker/pluginsdk scaffold`. I only added our jest config and the additional
-  dependencies that our plugin repo included. Turns out it wasn't yarn workspaces fault and now I'm
-  stumped.
+| Step | Description          | Command                                                         |
+|------|----------------------|-----------------------------------------------------------------|
+| 1    | Clone repo           | `git clone https://github.com/abannachZen/test-deck-plugin.git` |
+| 2    | Install dependencies | `yarn`                                                          |
+| 3    | Run tests            | `yarn test`                                                     |
 
-* Another thing I looked at with this test repo was changing my `moduleDirectories` to be,
+[Jasmine]: https://jasmine.github.io/index.html
 
-```json
-{
-  "moduleDirectories": [
-    "node_modules",
-    "src"
-  ]
-}
-```
+[Jest]: https://jestjs.io/
 
-but this did not help.
+[Karma]: https://karma-runner.github.io/latest/index.html
 
-## To Recreate
+[react-virtualized#1308]: https://github.com/bvaughn/react-virtualized/issues/1308
 
-1. Checkout repo
-2. `yarn`
-3. `yarn test`
+[react-virtualized#1494]: https://github.com/bvaughn/react-virtualized/issues/1494
+
+[spinnaker/deck]: https://github.com/spinnaker/deck
+
+[Webpack]: https://webpack.js.org/
