@@ -21,6 +21,10 @@ This repo is intended to be used to reproduce errors when writing deck plugins.
 
 ## To Reproduce
 
+* [Karma] configuration is in `karma.conf.js`
+* [Webpack] config is located in `webpack.config.test.js` 
+* [Webpack] context is constructed out of `karma-shim.js`
+
 | Step | Description          | Command                                                         |
 |------|----------------------|-----------------------------------------------------------------|
 | 1    | Clone repo           | `git clone https://github.com/abannachZen/test-deck-plugin.git` |
